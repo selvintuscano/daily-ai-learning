@@ -1,0 +1,33 @@
+<!doctype html>
+<html>
+<head>
+    <title>House Price Predictor</title>
+</head>
+<body>
+    <h1>House Price Predictor</h1>
+    <form method="POST">
+        <label>Longitude:</label>
+        <input type="text" name="longitude" required><br>
+        <label>Latitude:</label>
+        <input type="text" name="latitude" required><br>
+        <label>Housing Median Age:</label>
+        <input type="text" name="housing_median_age" required><br>
+        <label>Total Rooms:</label>
+        <input type="text" name="total_rooms" required><br>
+        <label>Total Bedrooms:</label>
+        <input type="text" name="total_bedrooms" required><br>
+        <label>Population:</label>
+        <input type="text" name="population" required><br>
+        <label>Households:</label>
+        <input type="text" name="households" required><br>
+        <label>Median Income:</label>
+        <input type="text" name="median_income" required><br>
+        <label>Ocean Proximity (encoded):</label>
+        <input type="text" name="ocean_proximity" required><br>
+        <input type="submit" value="Predict Price">
+    </form>
+    {% if prediction %}
+        <h2>Predicted Price: {{ prediction }}</h2>
+    {% endif %}
+</body>
+</html>
