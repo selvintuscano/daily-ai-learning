@@ -1,0 +1,199 @@
+{
+  "name": "Automation 1",
+  "nodes": [
+    {
+      "parameters": {
+        "content": "# Form Automation\n\n\n",
+        "height": 80,
+        "width": 384
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        96,
+        -176
+      ],
+      "typeVersion": 1,
+      "id": "495695d0-da09-4930-a5be-1e29d5e94366",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "formTitle": "Selvin Consultation Form",
+        "formDescription": "Hey there , nice to meet you.",
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "Name",
+              "placeholder": "Your Name",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "Service",
+              "fieldType": "dropdown",
+              "fieldOptions": {
+                "values": [
+                  {
+                    "option": "Consultation"
+                  },
+                  {
+                    "option": "Training"
+                  }
+                ]
+              },
+              "requiredField": true
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.formTrigger",
+      "typeVersion": 2.3,
+      "position": [
+        0,
+        0
+      ],
+      "id": "ed9d7c17-1202-437e-a732-ff69ddb23657",
+      "name": "On form submission",
+      "webhookId": "8918562a-a633-484e-8a89-4f79468266cc",
+      "notesInFlow": true,
+      "notes": "My First Form"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1rwcYCfKjTaUtweLjCK4-X2s4fCCQgYfrTQmDtUCd2no",
+          "mode": "list",
+          "cachedResultName": "Leads",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1rwcYCfKjTaUtweLjCK4-X2s4fCCQgYfrTQmDtUCd2no/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1rwcYCfKjTaUtweLjCK4-X2s4fCCQgYfrTQmDtUCd2no/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Name": "={{ $json.Name }}",
+            "Service": "={{ $json.Service }}",
+            "Time": "={{ $json.submittedAt }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Name",
+              "displayName": "Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Service",
+              "displayName": "Service",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Time",
+              "displayName": "Time",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        208,
+        0
+      ],
+      "id": "0fb4ca67-0329-4be7-8995-de11683ae8dd",
+      "name": "Append row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "rOiLwm78ai63tLlb",
+          "name": "Google Sheets account"
+        }
+      },
+      "notes": "My First Sheet"
+    },
+    {
+      "parameters": {
+        "sendTo": "selvintuscano2@gmail.com",
+        "subject": "Form Lead Update",
+        "emailType": "text",
+        "message": "=Hey Selvin, |How are you? There is a new lead on the form. Name :  {{ $json.Name }}\nService : {{ $json.Service }}\nTime : {{ $json.Time }}\n\nSource : {{ $workflow.id }}\n\n\nThanks,\nYour Awesome Workflow",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        416,
+        0
+      ],
+      "id": "a542fac1-8c69-46b1-bdda-74910b15af88",
+      "name": "Send a message",
+      "webhookId": "41e7ece5-d660-4298-9632-dc80b22e8ed3",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "zcKuVT2H58Keq6CB",
+          "name": "Gmail account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "On form submission": {
+      "main": [
+        [
+          {
+            "node": "Append row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Append row in sheet": {
+      "main": [
+        [
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "7e7778f7-511c-4165-a1b5-df67f8ea0100",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "e70bb6626b1d4feb9c09cacf0cca5bd1777fe54426f82560ab99a07f694c4810"
+  },
+  "id": "HI0bRyoCyhTmfdUz",
+  "tags": []
+}
