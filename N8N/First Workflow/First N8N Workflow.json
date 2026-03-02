@@ -1,0 +1,221 @@
+{
+  "name": "First N8N Workflow",
+  "nodes": [
+    {
+      "parameters": {
+        "formTitle": "Contact Form",
+        "formDescription": "Contact us if you have any questions",
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "First Name",
+              "placeholder": "Please enter your first name",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "Last Name",
+              "placeholder": "Please enter your last name",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "Email",
+              "fieldType": "email",
+              "placeholder": "Enter your email address",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "Description",
+              "placeholder": "Enter your issue description",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "Course type",
+              "fieldType": "dropdown",
+              "fieldOptions": {
+                "values": [
+                  {
+                    "option": "n8n"
+                  },
+                  {
+                    "option": "Zapier"
+                  },
+                  {
+                    "option": "make"
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.formTrigger",
+      "typeVersion": 2.3,
+      "position": [
+        400,
+        -128
+      ],
+      "id": "2354bdc2-46df-4c9f-9b9a-ecddd581abc0",
+      "name": "On Form Submission",
+      "webhookId": "16490d58-c92c-4bf5-b117-0b2f6e541cf6"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1wwa4finMtxXZVJvWhCi9vSo2tQrnLo2fMnAvuGsBkOo",
+          "mode": "list",
+          "cachedResultName": "Customer Data",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1wwa4finMtxXZVJvWhCi9vSo2tQrnLo2fMnAvuGsBkOo/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1wwa4finMtxXZVJvWhCi9vSo2tQrnLo2fMnAvuGsBkOo/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "First Name": "={{ $json['First Name'] }}",
+            "Last Name": "={{ $json['Last Name'] }}",
+            "Email": "={{ $json.Email }}",
+            "Description": "={{ $json.Description }}",
+            "Course type": "={{ $json['Course type'] }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "First Name",
+              "displayName": "First Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Last Name",
+              "displayName": "Last Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Email",
+              "displayName": "Email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Description",
+              "displayName": "Description",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Course type",
+              "displayName": "Course type",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        608,
+        -128
+      ],
+      "id": "29144a5c-694e-429c-8814-dbcd89f4128b",
+      "name": "Customer Databse",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "smI7K4wT5eOcIspj",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $json.Email }}",
+        "subject": "We received your inquiry - Thank you",
+        "emailType": "text",
+        "message": "=We received your message and will respond within 24 hours\n\nThanks for contacting us\n\nSupport Team",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        816,
+        -128
+      ],
+      "id": "e5e965a0-a89b-4047-815d-ef3c9715a097",
+      "name": "sendEmail",
+      "webhookId": "691e1b35-5baa-4366-b4b3-81a97742fff7",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "LxWRjmDjXutcrUxL",
+          "name": "Gmail account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "On Form Submission": {
+      "main": [
+        [
+          {
+            "node": "Customer Databse",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Customer Databse": {
+      "main": [
+        [
+          {
+            "node": "sendEmail",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "versionId": "5933ec07-3b64-4820-9861-26b60363e4c8",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "9fcadd770f453c0d2cc57cb298fe35bfbbd8b66f11282257639512731c831909"
+  },
+  "id": "8m20sqtDa9iYEqf8",
+  "tags": []
+}
